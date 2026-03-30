@@ -1,0 +1,24 @@
+{
+  "groove_version": "1",
+  "service_id": "patch-bridge",
+  "service_name": "Patch Bridge — CVE Lifecycle Management",
+  "version": "0.1.0",
+  "health_endpoint": "/health",
+  "capabilities": {
+    "scanning": {
+      "type": "scanning",
+      "description": "Reachability-filtered CVE triage for Rust/Cargo projects",
+      "protocol": "http",
+      "endpoint": "/api/triage"
+    },
+    "integrity": {
+      "type": "integrity",
+      "description": "Formal mitigation soundness verification via Idris2",
+      "protocol": "http",
+      "endpoint": "/api/verify"
+    }
+  },
+  "related": {
+    "panic-attacker": "https://github.com/hyperpolymath/panic-attacker"
+  }
+}

@@ -1,0 +1,16 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; Project state — update throughout each session
+(state
+  (metadata
+    (version "1.0.0")
+    (project "{{REPO}}")
+    (last-updated "{{CURRENT_DATE}}"))
+  (project-context
+    (description "{{REPO_DESCRIPTION}}")
+    (primary-language "{{PRIMARY_LANGUAGE}}")
+    (status "initial"))
+  (current-position
+    (phase "setup")
+    (completion-percentage 0))
+  (critical-next-actions
+    ("Complete project setup" "Run just init" "Configure CI secrets")))

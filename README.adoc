@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Patch Bridge
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+:toc: macro
+
+**Closing the detection-to-remediation gap in CVE lifecycle management.**
+
+Existing vulnerability scanners stop at _detection_. Patch Bridge closes the gap through reachability-filtered triage, formal mitigation soundness (Idris2), and adoption gating (PanLL panel).
+
+== Origin
+
+Extracted from https://github.com/hyperpolymath/panic-attacker[panic-attacker] `src/bridge/` into a standalone project.
+
+== Paper
+
+`docs/arxiv/patch-bridge.tex` — 2,036 lines, submitted to Zenodo/HAL.

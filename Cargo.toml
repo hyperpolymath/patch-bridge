@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+[package]
+name = "patch-bridge"
+version = "0.1.0"
+description = "CVE mitigation lifecycle — from disclosure to verified remediation with reachability analysis and formal soundness"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
+license = "PMPL-1.0-or-later"
+repository = "https://github.com/hyperpolymath/patch-bridge"
+edition = "2021"
+rust-version = "1.75"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+semver = "1"
+anyhow = "1.0"
+
+[dev-dependencies]
+proptest = "1"
