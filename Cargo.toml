@@ -2,7 +2,7 @@
 [package]
 name = "patch-bridge"
 version = "0.1.0"
-description = "CVE mitigation lifecycle — from disclosure to verified remediation with reachability analysis and formal soundness"
+description = "CVE mitigation lifecycle — from disclosure to verified remediation with reachability analysis (formal soundness proofs pending)"
 authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
 license = "PMPL-1.0-or-later"
 repository = "https://github.com/hyperpolymath/patch-bridge"

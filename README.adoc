@@ -5,7 +5,7 @@ Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 **Closing the detection-to-remediation gap in CVE lifecycle management.**
 
-Existing vulnerability scanners stop at _detection_. Patch Bridge closes the gap through reachability-filtered triage, formal mitigation soundness (Idris2), and adoption gating (PanLL panel).
+Existing vulnerability scanners stop at _detection_. Patch Bridge closes the gap through reachability-filtered triage, reachability-filtered triage (formal soundness proofs pending), and adoption gating (PanLL panel).
 
 == Origin
 
