@@ -24,3 +24,9 @@
 ## Priority
 
 **HIGH** — Patch Bridge is the CVE mitigation lifecycle tool. Incorrect classification or reachability analysis directly impacts security posture. The empty ABI directory signals this work was planned but never started.
+
+## Template ABI Cleanup (2026-03-29)
+
+Template ABI removed -- was creating false impression of formal verification.
+The removed files (Types.idr, Layout.idr, Foreign.idr) contained only RSR template
+scaffolding with unresolved {{PROJECT}}/{{AUTHOR}} placeholders and no domain-specific proofs.
