@@ -3,9 +3,19 @@
 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 :toc: macro
 
-**Closing the detection-to-remediation gap in CVE lifecycle management.**
+**Draft CVE-mitigation design and extraction target from `panic-attacker`.**
 
-Existing vulnerability scanners stop at _detection_. Patch Bridge closes the gap through reachability-filtered triage, reachability-filtered triage (formal soundness proofs pending), and adoption gating (PanLL panel).
+Patch Bridge aims to close the detection-to-remediation gap in CVE lifecycle
+management through reachability-aware triage, mitigation planning, and
+adoption gating.
+
+Current status:
+
+* design/research draft, not a finished standalone tool
+* no runnable Rust crate target yet
+* no end-to-end Idris2 proof artefacts in this repository
+* not production-ready
+* not publication-ready in its current state
 
 == Origin
 
@@ -13,4 +23,6 @@ Extracted from https://github.com/hyperpolymath/panic-attacker[panic-attacker] `
 
 == Paper
 
-`docs/arxiv/patch-bridge.tex` — 2,036 lines, submitted to Zenodo/HAL.
+`docs/arxiv/patch-bridge.tex` — draft manuscript under audit. It should not be
+treated as submission-ready until the repository, evidence, and claims are
+aligned.

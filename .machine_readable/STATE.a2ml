@@ -2,15 +2,18 @@
 ;; Project state — update throughout each session
 (state
   (metadata
-    (version "1.0.0")
-    (project "{{REPO}}")
-    (last-updated "{{CURRENT_DATE}}"))
+    (version "0.1.0")
+    (project "patch-bridge")
+    (last-updated "2026-03-30"))
   (project-context
-    (description "{{REPO_DESCRIPTION}}")
-    (primary-language "{{PRIMARY_LANGUAGE}}")
-    (status "initial"))
+    (description "Draft CVE-mitigation bridge extracted from panic-attacker; currently under audit and claim containment")
+    (primary-language "rust")
+    (status "active"))
   (current-position
-    (phase "setup")
-    (completion-percentage 0))
+    (phase "audit-remediation")
+    (completion-percentage 10))
   (critical-next-actions
-    ("Complete project setup" "Run just init" "Configure CI secrets")))
+    ("Remove template residue from release-facing paths"
+     "Replace fake fuzz placeholder with honest documentation"
+     "Align README, roadmap, and paper status with actual evidence"
+     "Create a runnable crate target or explicitly keep the repo design-only")))

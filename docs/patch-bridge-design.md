@@ -7,6 +7,11 @@
 **Date**: 2026-03-21
 **Position**: Subcommand family within `panic-attack`, with PanLL panel and BoJ cartridge
 
+**Audit note (2026-03-30)**: This document is aspirational. References below
+to proofs, formal verification, lifecycle automation, and upstream integration
+describe intended architecture unless separately evidenced by checked artefacts
+in the repository.
+
 ---
 
 ## 1. Problem Statement

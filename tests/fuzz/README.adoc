@@ -1,0 +1,7 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Fuzz Status
+
+No real fuzz corpus or fuzz harness is present yet.
+
+This directory is intentionally retained as a reminder that fuzzing remains
+unimplemented. It must not be treated as evidence of fuzz coverage.

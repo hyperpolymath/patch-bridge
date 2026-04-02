@@ -1,6 +1,6 @@
 {
   "title": "Patch Bridge: Closing the Detection-to-Remediation Gap in CVE Lifecycle Management",
-  "description": "Existing vulnerability scanners stop at detection. Patch Bridge closes the gap from disclosure to verified remediation through reachability analysis, formal soundness proofs, and automated mitigation synthesis. Extends the panic-attack static analysis framework with three contributions: (1) reachability-filtered CVE triage that eliminates false positives by proving whether vulnerable code paths are actually exercised, (2) a formal model of mitigation soundness using Idris2 dependent types, and (3) a PanLL panel for human-in-the-loop adoption gating.",
+  "description": "Existing vulnerability scanners stop at detection. Patch Bridge is currently a design-stage proposal for bridging disclosure to remediation through reachability analysis, planned Idris2 proof obligations, and mitigation selection. The current repository describes an intended architecture and research agenda; it does not yet provide a runnable standalone tool, mechanised proof corpus, or validated remediation metrics.",
   "upload_type": "publication",
   "publication_type": "preprint",
   "creators": [
@@ -48,5 +48,5 @@
       "scheme": "url"
     }
   ],
-  "notes": "Patch Bridge originated as a module within panic-attacker and has been extracted into a standalone project. The paper and implementation are self-contained."
+  "notes": "Patch Bridge originated as a module within panic-attacker and has been extracted into a standalone project. The current repository is still under audit and should be read as a design-stage artifact rather than a completed implementation."
 }

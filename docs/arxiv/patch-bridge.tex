@@ -1,6 +1,6 @@
 % SPDX-License-Identifier: PMPL-1.0-or-later
 %
-% Patch Bridge: Formally Verified CVE Mitigation with Contextual Taint
+% Patch Bridge: Towards Verified CVE Mitigation with Contextual Taint
 % Analysis and Three-Way Classification
 %
 % Author: Jonathan D.A. Jewell
@@ -80,7 +80,7 @@
 }
 
 % --- Metadata ---
-\title{\textbf{Patch Bridge: Formally Verified CVE Mitigation\\
+\title{\textbf{Patch Bridge: Towards Verified CVE Mitigation\\
 with Contextual Taint Analysis\\and Three-Way Classification}}
 
 \author{
@@ -105,28 +105,30 @@ at \emph{detection}. They enumerate which dependencies carry known
 vulnerabilities but provide no systematic path from disclosure to
 mitigation, no contextual analysis of whether vulnerabilities are
 \emph{reachable} in the developer's specific code, and no formal
-guarantees that proposed mitigations are sound. We present \textsc{Patch
-Bridge}, an extension to the \texttt{panic-attack} static analysis
-framework that closes this gap through three contributions:
+guarantees that proposed mitigations are sound. We outline \textsc{Patch
+Bridge}, a proposed extension to the \texttt{panic-attack} static
+analysis framework, through three contributions:
 (1)~\emph{multi-source CVE intelligence with bubble detection}, which
 aggregates advisories across three tiers of sources and flags
 discrepancies as early warning signals;
 (2)~\emph{contextual taint analysis via miniKanren}, which determines
 whether a vulnerability class is actually reachable through
 source-to-sink data flow tracking in the developer's code; and
-(3)~\emph{three-way mitigation classification with formal proofs in
-Idris2}, where every CVE is classified as \textsc{Mitigable} (with a
-machine-checked soundness proof), \textsc{Unmitigable} (with a proof
-that no candidate mitigation preserves application behaviour while
-preventing exploitation), or \textsc{Concatenative} (where individually
-insufficient mitigations compose to become sufficient, verified by a
-compositional proof). Integrated as a pre-commit hook via the
-\texttt{assail} subcommand, \textsc{Patch Bridge} reduces false positive
-rates by 73\% through contextual reachability filtering while providing
-the first formally verified mitigation lifecycle for software supply
-chain vulnerabilities. Our implementation is open-source, written in Rust
-with an embedded miniKanren engine and Idris2 proof obligations.
+(3)~\emph{three-way mitigation classification with planned proof
+obligations in Idris2}, where each CVE is intended to be classified as
+\textsc{Mitigable}, \textsc{Unmitigable}, or \textsc{Concatenative}
+with corresponding evidence requirements. The current contribution is a
+design and research agenda rather than a completed formally verified
+implementation: the repository does not yet provide end-to-end
+mechanised proofs, a production-ready standalone tool, or validated
+lifecycle metrics. We therefore present the classification model,
+intended architecture, and proof interfaces as a basis for subsequent
+implementation and evaluation.
 \end{abstract}
+
+\noindent\textbf{Status note:} This manuscript is a draft under audit. Claims
+about implementation, proof coverage, and operational results should be read as
+design intent unless explicitly backed by checked artefacts in the repository.
 
 \noindent\textbf{Keywords:} software supply chain security, CVE
 mitigation, formal verification, taint analysis, miniKanren, dependent
@@ -1206,8 +1208,9 @@ from the developer interview mode.
 
 \subsection{Idris2 Proof Infrastructure}
 
-The Idris2 proof obligations are compiled separately and invoked by
-the Rust binary as a verification step. The workflow is:
+The intended Idris2 proof obligations would be compiled separately and
+invoked by the Rust binary as a verification step. The proposed workflow
+is:
 
 \begin{enumerate}[nosep]
   \item \textsc{Patch Bridge} generates an Idris2 source file
@@ -1223,184 +1226,68 @@ the Rust binary as a verification step. The workflow is:
     not achieved.
 \end{enumerate}
 
-This architecture decouples the Rust runtime from the Idris2 compiler:
-\textsc{Patch Bridge} functions without Idris2 installed (using
-heuristic classification), but produces formally verified results when
-the compiler is available. The graduated approach avoids making formal
-verification a hard prerequisite for adoption.
+This proposed architecture decouples the Rust runtime from the Idris2
+compiler: a future \textsc{Patch Bridge} implementation could function
+without Idris2 installed (using heuristic classification), but produce
+formally verified results when the compiler is available. The graduated
+approach is meant to avoid making formal verification a hard
+prerequisite for adoption.
 
 \subsection{Performance Characteristics}
 
-\begin{table}[t]
-\centering
-\caption{Performance characteristics of \textsc{Patch Bridge} on
-representative Rust projects. Times are medians of 10 runs on a
-Ryzen 7 7700X with NVMe storage.}
-\label{tab:performance}
-\begin{tabular}{@{}lrrr@{}}
-\toprule
-\textbf{Phase} & \textbf{Small} & \textbf{Medium} & \textbf{Large} \\
-& (50 deps) & (200 deps) & (500 deps) \\
-\midrule
-Lockfile parse & 2\,ms & 8\,ms & 18\,ms \\
-OSV batch query & 340\,ms & 890\,ms & 1.9\,s \\
-Phantom detection & 15\,ms & 120\,ms & 450\,ms \\
-Taint analysis & 85\,ms & 680\,ms & 2.4\,s \\
-Classification & 12\,ms & 45\,ms & 130\,ms \\
-Idris2 proof check & 1.2\,s & 3.8\,s & 8.1\,s \\
-\midrule
-\textbf{Total (with proofs)} & \textbf{1.7\,s} & \textbf{5.5\,s} & \textbf{13.0\,s} \\
-\textbf{Total (heuristic)} & \textbf{0.5\,s} & \textbf{1.7\,s} & \textbf{4.9\,s} \\
-\bottomrule
-\end{tabular}
-\end{table}
+The current repository does not provide reproducible performance data.
+At audit time, the standalone crate does not build: \texttt{cargo check}
+fails because the manifest declares no runnable target. As a result, this
+paper reports no measured throughput or latency claims for the proposed
+pipeline.
 
-\cref{tab:performance} shows that \textsc{Patch Bridge} is suitable
-for pre-commit use even for large projects. The Idris2 proof checking
-dominates the runtime for formally verified classifications; the
-heuristic fallback is fast enough for interactive use in all cases.
-Incremental analysis (when only source files have changed but
-dependencies are stable) reduces runtimes by 60--80\%.
+The eventual evaluation should break performance down into lockfile
+parsing, advisory aggregation, phantom-dependency filtering, taint
+analysis, classification, and optional proof checking. Until a runnable
+prototype exists, any concrete timing table would be speculative rather
+than evidence.
 
 % ============================================================================
 % 10. EVALUATION
 % ============================================================================
-\section{Evaluation}
+\section{Evaluation Plan and Current Evidence}
 \label{sec:evaluation}
 
-\subsection{Experimental Setup}
-
-We evaluate \textsc{Patch Bridge} on three dimensions: false positive
-reduction through contextual analysis, concatenative danger detection
-accuracy, and comparison with existing tools. The evaluation corpus
-comprises 15 open-source Rust projects spanning web services, CLI tools,
-cryptographic libraries, and embedded systems, with a total of 2,847
-unique dependencies and 127 known CVEs affecting those dependencies at
-the time of evaluation.
-
-\subsection{False Positive Reduction}
-
-\begin{table}[t]
-\centering
-\caption{False positive reduction through contextual analysis. ``Raw''
-is the count of CVEs reported by traditional scanners. ``Contextual''
-is the count after \textsc{Patch Bridge} taint analysis.}
-\label{tab:fp-reduction}
-\begin{tabular}{@{}lrrrr@{}}
-\toprule
-\textbf{Filter} & \textbf{CVEs} & \textbf{Removed} & \textbf{Reduction} \\
-\midrule
-Raw (all scanners) & 127 & --- & --- \\
-After phantom filter & 104 & 23 & 18.1\% \\
-After reachability & 34 & 70 & 67.3\% \\
-\midrule
-\textbf{Total reduction} & \textbf{34} & \textbf{93} & \textbf{73.2\%} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\cref{tab:fp-reduction} shows the cascaded effect of \textsc{Patch
-Bridge}'s two contextual filters. Phantom dependency detection removes
-18.1\% of CVE reports by identifying dependencies that are declared
-but never imported. Taint-based reachability analysis removes an
-additional 55.1\% by determining that the vulnerable code paths are
-not reachable from any untrusted input source.
-
-The combined 73.2\% reduction transforms the developer's experience
-from ``127 CVEs to investigate'' to ``34 CVEs that actually matter
-in my code.'' Manual verification of the filtered CVEs confirmed
-zero true positives among the filtered set---all 93 removed CVEs were
-genuinely unreachable in their respective projects.
-
-\subsection{Classification Breakdown}
-
-Of the 34 contextually reachable CVEs:
+The present repository does not support an empirical evaluation section in
+the usual sense. At audit time:
 
 \begin{itemize}[nosep]
-  \item 21 (61.8\%) were classified as \textsc{Mitigable} with
-    verified soundness proofs.
-  \item 7 (20.6\%) were classified as \textsc{Unmitigable} with
-    impossibility proofs, all confirmed by manual analysis.
-  \item 3 (8.8\%) were classified as \textsc{Concatenative}, involving
-    6 individual CVEs that formed 3 danger chains.
-  \item 3 (8.8\%) could not be formally verified (Idris2 proof
-    timeout) and fell back to heuristic classification.
+  \item the standalone crate does not build (`cargo check` fails because
+    the manifest has no lib or binary target),
+  \item there is no runnable end-to-end mitigation pipeline,
+  \item there are no mechanised proofs in the repository, and
+  \item there is no benchmark, corpus, or experiment log that could
+    justify quantitative claims.
 \end{itemize}
 
-\subsection{Concatenative Danger Validation}
+Accordingly, the correct status of this section is a \emph{planned
+evaluation agenda}, not completed experimental validation.
 
-The three detected concatenative dangers were:
+The future evaluation should answer at least five questions:
 
 \begin{enumerate}[nosep]
-  \item An input validation bypass in a YAML parser (CVSS 4.3)
-    combined with a path traversal in a file utility (CVSS 5.3),
-    forming an arbitrary file write chain (combined score: 8.7).
-  \item A timing side channel in a cryptographic library (CVSS 3.7)
-    combined with an authentication bypass in a JWT validator
-    (CVSS 5.0), enabling token forgery (combined score: 9.1).
-  \item A deserialization weakness in a message format library
-    (CVSS 5.6) combined with code execution in a plugin loader
-    (CVSS 6.5), forming a remote code execution chain across
-    a Rust-to-C FFI boundary (combined score: 9.8).
+  \item Does multi-source advisory aggregation materially improve
+    coverage or lead time over single-source scanners?
+  \item Does contextual reachability analysis reduce false positives on
+    a published corpus, and by how much?
+  \item Can concatenative danger detection find exploitable multi-CVE
+    chains that ordinary scanners miss?
+  \item When proof infrastructure exists, how often can mitigation,
+    impossibility, or compositional obligations be discharged in
+    practice?
+  \item Is the eventual tool fast enough for developer workflows such as
+    pre-commit or CI use?
 \end{enumerate}
 
-All three concatenative dangers were confirmed as exploitable through
-proof-of-concept demonstration. None would have been flagged as
-critical by any existing scanner operating on individual CVSS scores.
-
-\subsection{Bubble Detection Validation}
-
-During the evaluation period, bubble detection generated 8 tier
-discrepancy alerts:
-
-\begin{itemize}[nosep]
-  \item 3 alerts for CVEs appearing in Tier~2 (RustSec) before Tier~1
-    (NVD), with a mean lead time of 4.2 days.
-  \item 2 alerts for exploit PoCs in community sources contradicting
-    ``no known exploits'' in official advisories.
-  \item 2 alerts for CVSS score divergence $\geq 2.0$ between NVD and
-    vendor advisories.
-  \item 1 alert for a vulnerability class discussed in an arXiv
-    preprint 11 days before the first CVE assignment.
-\end{itemize}
-
-The early warning capability---detecting vulnerabilities days before
-they appear in authoritative databases---represents a qualitative
-improvement over single-source scanning.
-
-\subsection{Comparison with Existing Tools}
-
-\begin{table}[t]
-\centering
-\caption{Feature comparison with existing vulnerability scanners.
-\ding{51} = supported, \ding{55} = not supported, $\sim$ = partial.}
-\label{tab:comparison}
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-\textbf{Feature} & \rotatebox{60}{\textsc{Patch Bridge}} & \rotatebox{60}{Trivy} & \rotatebox{60}{Grype} & \rotatebox{60}{Snyk} & \rotatebox{60}{OSV-Scanner} \\
-\midrule
-CVE detection & \ding{51} & \ding{51} & \ding{51} & \ding{51} & \ding{51} \\
-Multi-source intel & \ding{51} & $\sim$ & \ding{55} & $\sim$ & \ding{51} \\
-Bubble detection & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
-Reachability analysis & \ding{51} & \ding{55} & \ding{55} & $\sim$ & \ding{55} \\
-Phantom dep detection & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
-Mitigation generation & \ding{51} & \ding{55} & \ding{55} & $\sim$ & \ding{55} \\
-Formal verification & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
-Concatenative detection & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
-Lifecycle management & \ding{51} & \ding{55} & \ding{55} & $\sim$ & \ding{55} \\
-Pre-commit integration & \ding{51} & $\sim$ & $\sim$ & \ding{51} & $\sim$ \\
-Cross-language chains & \ding{51} & \ding{55} & \ding{55} & \ding{55} & \ding{55} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\cref{tab:comparison} summarises the feature comparison.
-\textsc{Patch Bridge} is the only tool in this comparison that provides
-contextual reachability analysis, formal verification of mitigations,
-concatenative danger detection, and a complete mitigation lifecycle.
-Snyk provides partial reachability analysis for some languages but
-without formal guarantees; Trivy and OSV-Scanner query multiple
-databases but do not exploit discrepancies as signals.
+Until that evidence exists, comparisons with Trivy, Grype, Snyk,
+OSV-Scanner, or other scanners should be read as architectural
+comparisons of intended capability rather than validated head-to-head
+results.
 
 % ============================================================================
 % 11. RELATED WORK
@@ -1608,28 +1495,21 @@ problem---it is a \emph{mitigation} problem. The industry has built
 sophisticated tools for finding CVEs but has left developers to manage
 the aftermath with ad-hoc processes and unverified workarounds.
 
-\textsc{Patch Bridge} addresses this gap with three interlocking
-innovations. Multi-source intelligence aggregation with bubble detection
-provides earlier and more complete vulnerability awareness.
-Contextual taint analysis via miniKanren eliminates 73\% of false
-positives by determining which CVEs are actually reachable in the
-developer's specific code. Three-way classification with Idris2 formal
-proofs transforms mitigation from guesswork into engineering: when
-\textsc{Patch Bridge} says a CVE is mitigable, it provides a
-machine-checked proof; when it says a CVE is unmitigable, it provides
-a machine-checked impossibility proof; when it detects concatenative
-danger, it provides a compositional proof of the combined risk.
+\textsc{Patch Bridge} proposes three interlocking ideas. Multi-source
+intelligence aggregation with bubble detection aims to provide earlier
+and more complete vulnerability awareness. Contextual taint analysis
+via miniKanren aims to distinguish reachable from irrelevant CVEs in the
+developer's specific code. Three-way classification with Idris2 proof
+obligations aims to turn mitigation from guesswork into engineering when
+the surrounding implementation and proof artefacts exist.
 
-Integrated into the \texttt{panic-attack} static analysis framework
-as a pre-commit tool, \textsc{Patch Bridge} makes formally verified
-vulnerability management a routine part of the development workflow
-rather than an exceptional security exercise. The complete mitigation
-lifecycle---from detection through verified mitigation to automatic
-retirement---ensures that mitigations do not become permanent technical
-debt.
+At present, however, this remains a design agenda rather than a
+demonstrated toolchain. The repository does not yet provide the
+standalone runnable binary, proof corpus, or experimental evidence that
+would justify stronger claims about verified mitigation at scale.
 
 The source code is available at
-\url{https://github.com/hyperpolymath/panic-attacker} under the
+\url{https://github.com/hyperpolymath/patch-bridge} under the
 Palimpsest License (PMPL-1.0-or-later).
 
 % ============================================================================

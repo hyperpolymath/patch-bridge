@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Patch Bridge Publication Review 2026-03-31
+:revdate: 2026-03-31
+
+== Verdict
+
+Status: `hold back`
+
+This repository is not publication-ready. It remains a design-stage artifact
+with a partially contained paper, no runnable standalone crate target, no
+mechanised proof corpus, and no empirical evaluation surface that could justify
+DOI-grade or HOL-grade publication.
+
+== Evidence checked in this pass
+
+* `cargo check` still fails immediately: `Cargo.toml` has no lib or binary
+  target, so the standalone crate does not build.
+* `tests/` contains only `tests/fuzz/README.adoc`; there is no end-to-end,
+  aspect, benchmark, or substantive point-to-point test suite.
+* The prior audit note remains correct: `verification/proofs` does not contain
+  the mechanised artefacts promised by the paper.
+
+== Containment actions taken in this pass
+
+* `docs/arxiv/patch-bridge.tex` no longer presents fabricated performance
+  tables, evaluation results, or validated tool comparisons as if they were
+  reproduced from the current repository.
+* The paper's performance section now explicitly states that no reproducible
+  timing data exists while the crate lacks a runnable target.
+* The evaluation section now states the truth: there is an evaluation plan, not
+  a completed empirical study.
+* The conclusion now describes Patch Bridge as a proposal and design agenda
+  rather than a demonstrated verified workflow.
+* `.zenodo.json` was tightened to design-stage wording so the archival metadata
+  no longer advertises verified remediation or a self-contained implementation.
+
+== Remaining blockers
+
+* No runnable standalone crate target.
+* No mechanised proof artefacts for mitigation, impossibility, or
+  concatenative claims.
+* No reproducible benchmark or evaluation corpus.
+* No real test surfaces beyond the honest fuzz-gap note.
+
+== Decision
+
+Treat `patch-bridge` as `RED`:
+
+* do not submit to Zenodo, HAL, or any venue now
+* do not describe the repo as a completed verified tool
+* only resume publication work after there is a runnable implementation and
+  real proof/test evidence to review

@@ -1,22 +1,39 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
-= YOUR Template Repo Roadmap
+= Patch Bridge Roadmap
 
 == Current Status
 
-Initial development phase.
+Patch Bridge is in the audit-remediation phase. The repo contains a design
+direction and draft paper surface, but it does not yet justify production or
+formal-verification claims.
 
 == Milestones
 
-=== v0.1.0 - Foundation
-* [ ] Core functionality
-* [ ] Basic documentation
-* [ ] CI/CD pipeline
+=== v0.1.0 - Containment
+* [ ] remove template residue from public-facing paths
+* [ ] align README, state metadata, and paper status
+* [ ] replace fake fuzz and placeholder evidence with honest notes
+* [ ] add an audit report with current blockers
 
-=== v1.0.0 - Stable Release
-* [ ] Full feature set
-* [ ] Comprehensive tests
-* [ ] Production ready
+=== v0.2.0 - Runnable Prototype
+* [ ] create a real Rust crate target
+* [ ] implement minimal detection-to-mitigation bridge flow
+* [ ] add real unit and integration tests
+* [ ] remove scaffold-only Justfile and container paths
 
-== Future Directions
+=== v0.3.0 - Research Core
+* [ ] implement contextual reachability analysis for a bounded set of vulnerability classes
+* [ ] add lifecycle management for mitigation application and retirement
+* [ ] define proof boundaries honestly and wire proof obligations to concrete artefacts
 
-_To be determined based on community feedback._
+=== v0.4.0 - Evidence Hardening
+* [ ] add end-to-end tests, aspect tests, and benchmarks
+* [ ] add reproducible example cases and traceability notes
+* [ ] prepare a revised paper whose claims do not outrun the repository
+
+=== v1.0.0 - Only When Earned
+* [ ] runnable toolchain
+* [ ] real proof artefacts where claimed
+* [ ] comprehensive tests and benchmarks
+* [ ] no template residue in release paths
+* [ ] publication-grade paper/artifact parity

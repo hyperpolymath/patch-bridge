@@ -1,0 +1,85 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Patch Bridge Audit 2026-03-30 (v2)
+:revdate: 2026-03-30
+
+== Summary
+
+Status: `fail`
+
+Patch Bridge remains a research agenda rather than a release-grade artefact.
+The repository still shows template scaffolding, lacks any runnable crate target,
+offers no mechanised proofs beyond placeholder manifests, and therefore cannot
+bear the publication or stable-release claims currently attached to the paper or
+design narrative. This document is v2 of the audit to demonstrate that we
+continually revisit the evidence boundary, welcome outside critique, and are
+actively raising the bar.
+
+== Evidence log
+
+* `cargo check` fails immediately because `Cargo.toml` does not define any lib
+  or binary target and the standard entry points (`src/lib.rs`, `src/main.rs`)
+  are absent.
+* `rg -n "TODO|FIXME|XXX|HACK|STUB|PARTIAL"` highlights dozens of template
+  scaffolding markers in `container/`, `Justfile`, `flake.nix`, `guix.scm`,
+  governance docs, and release artifacts, so marker scans will continue to
+  trigger until the placeholders are resolved or removed.
+* `tests/fuzz/README.adoc` now admits there is no real fuzz harness, and no
+  other tests exist beyond the unit tests embedded in `src/bridge/reachability.rs`.
+* `verification/proofs` contains nothing beyond the AI manifest. No Idris2,
+  Lean4, Agda, or other mechanised proof is present, yet the paper still promises
+  three-way classification proofs.
+* `docs/arxiv/patch-bridge.tex` uses formal-language phrases about verified CVE
+  mitigation and proof obligations, but the repository lacks the referenced proof
+  artifacts and cannot reproduce the claims.
+
+== Confirmed blockers
+
+* `Cargo.toml` has no runnable target, so the crate cannot compile at all.
+* Release-facing scaffolds (`Justfile`, `Containerfile`, `flake.nix`, `guix.scm`,
+  governance checklists) remain populated with TODO markers and generic RSR
+  template data (e.g. `project := "rsr-template-repo"`), so auditors keep flagging
+  template residue as evidence of immaturity.
+* There are no mechanised proofs; `verification/proofs` is an empty manifest,
+  the paper's obligations are unmet, and no `believe_me`/`postulate` mitigations
+  even exist because there is nothing to complement.
+* Test coverage is minimal: only the `reachability` helper includes unit tests.
+  No point-to-point tests outside that module, no end-to-end flow, no aspect
+  tests (security, concurrency, accessibility), and no benchmarks.
+* `tests/fuzz` is a placeholder directory with a README explicitly stating that
+  no fuzz harness exists.
+
+== Containment actions taken
+
+* README, AI manifest, roadmap, and state files now emphasise the draft/agenda
+  posture instead of implying a production-ready release.
+* The paper title, abstract, and discussion note possible future steps rather than
+  presenting verified implementation results.
+* The design memo explicitly flags the content as aspirational unless separate
+  evidence is provided.
+* `tests/fuzz/placeholder.txt` (fake evidence) was removed and replaced with an
+  honest status note.
+
+== Immediate next actions
+
+* Remove the remaining template TODOs from release scripts and show the audit
+  scanner that the paths no longer contain placeholder markers.
+* Either add a real crate target (`src/lib.rs` or binary entries) so `cargo
+  check`/`cargo test` succeed, or reframe the repo as design-only and remove the
+  current release claims entirely.
+* Introduce real mechanised proofs before the manuscript continues to say “proof
+  obligations”; anything claiming verification must link to Idris2/Lean4/Agda
+  artefacts that compile without `believe_me` or `postulate`.
+* Expand the test suite: at a minimum add additional module/unit tests, an
+  intentional end-to-end sequence, aspect coverage (static analysis, taint flow),
+  and an honest benchmark suite when performance claims appear.
+* Keep the paper labeled as under audit, and do not submit/publish until the
+  evidence truly matches the claims.
+
+== Invitation for review
+
+We are running this as a continuous, community-driven audit. If you have
+additional evidence, blockers, or improvement suggestions, please raise them via
+issues/discussions or directly annotate this document. Being challenged is part
+of the process; we invite everyone who cares about software engineering, maths,
+or formal proof community standards to tell us why they think the current state
+is insufficient or what infrastructure is needed to meet the claim bar.
