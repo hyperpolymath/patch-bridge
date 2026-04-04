@@ -1,41 +1,163 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
-= {project-name} — Show Me The Receipts
+= patch-bridge — Show Me The Receipts
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 :toc:
 :icons: font
 
 The README makes claims. This file backs them up.
 
-For each headline feature: what makes it work, where the code is, and an honest
-caveat. Link out to the technology's own docs rather than over-explaining.
-Reference arXiv papers only where the approach is novel. Keep it brief — prove
-the claim, don't write a textbook.
+== CVE Triage: Detection-to-Remediation Gap
 
-== [Claim from README]
-
-[quote, README]
+[quote, README.adoc]
 ____
-Paste the specific claim here.
+Patch Bridge aims to close the detection-to-remediation gap in CVE lifecycle
+management through reachability-aware triage, mitigation planning, and
+adoption gating.
 ____
 
-Brief explanation of _how_ — 2-4 sentences. Link to the technology
-(https://elixir-lang.org[Elixir], https://ziglang.org[Zig], etc.) rather than
-explaining it from scratch.
+The core insight in Patch Bridge is that most CVE scanners report a
+vulnerability the moment a package appears in a lockfile, regardless of
+whether your code ever calls the vulnerable function. Patch Bridge adds a
+reachability step: it scans every `.rs` file for `use <crate>::`,
+`<crate>::`, and `extern crate <crate>` patterns. A crate present in
+`Cargo.lock` but absent from all import sites is classified as a phantom
+dependency and downgraded to `Informational` — no urgent action required.
+A crate that is imported and has no semver-compatible fix available is
+classified `Unmitigable`; one with a fix is `Mitigable`.
 
-**Caveat:** What doesn't this cover? Where are the limits?
+The triage pipeline in `src/bridge/mod.rs:triage()` runs in five steps:
+(1) `lockfile::parse_cargo_lock` extracts registry dependencies from
+`Cargo.lock`, skipping the root crate and path/git sources; (2)
+`intelligence::query_osv_batch` POSTs to the OSV API
+(`https://api.osv.dev/v1/querybatch`) for all deps simultaneously; (3)
+for each vulnerable dep, `reachability::check_reachability` walks all `.rs`
+files under the project root using `walkdir`; (4) `classify::classify`
+combines the `Vulnerability` struct and `ReachabilityEvidence` into a
+three-way `Classification`; (5) a `BridgeReport` is assembled with per-CVE
+`AssessedCve` entries and summary counts.
 
-- Implementation: `path/to/code`
-- Learn more: https://relevant-docs.example.com
+**Caveat:** The README is explicit: this is a design/research draft extracted
+from `panic-attacker/src/bridge/`. There is no standalone CLI binary yet — no
+`main.rs` or binary stanza in `Cargo.toml`. The OSV query path is the only
+intelligence source (MVP); NVD, GHSA, and VirusTotal (Tier 2/3) are
+declared in the `SourceTier` enum but not yet integrated. Phase 2 kanren
+taint analysis (for `Unreachable` classification beyond mere import absence)
+is referenced in comments but has no implementation. The Idris2 ABI
+definitions are scaffolds with no formal proof artefacts.
+
+- Triage orchestrator: `src/bridge/mod.rs:226–283` (`triage()`)
+- Lockfile parser: `src/bridge/lockfile.rs` (`parse_cargo_lock`)
+- Reachability scanner: `src/bridge/reachability.rs` (`check_reachability`)
+- Classifier: `src/bridge/classify.rs` (`classify`, `classify_reachable`)
+- Intelligence layer: `src/bridge/intelligence.rs` (`query_osv_batch`)
+- Registry/lifecycle: `src/bridge/registry.rs` (mitigation lifecycle tracking)
+- Learn more: https://api.osv.dev (OSV API), https://nvd.nist.gov (NVD), https://docs.github.com/en/code-security/security-advisories (GHSA)
+
+== Three-Way Classification
+
+[quote, src/bridge/mod.rs]
+____
+/// Three-way CVE classification result.
+pub enum Classification {
+    /// A semver-compatible fix exists or a control can be layered
+    Mitigable,
+    /// No fix available and dependency is reachable
+    Unmitigable,
+    /// CVE exists but dependency is phantom/unreachable in this codebase
+    Informational,
+}
+____
+
+The `classify::classify` function matches on `ReachabilityStatus`:
+`Phantom` → `Informational` (dep declared, never imported; suggest removing
+from `Cargo.toml`); `Unreachable` → `Informational` (imported but no data
+flow to vulnerable code path, pending Phase 2 taint); `Reachable` →
+`classify_reachable`, which checks `vuln.fixed_versions.is_empty()` to
+decide between `Mitigable` and `Unmitigable`. Each classification carries a
+human-readable `rationale` string and a `suggested_action` — both suitable
+for rendering in a PanLL panel or BoJ cartridge. The `BridgeReport` struct
+has a `recount()` method that recomputes all four category counts from the
+`cves` slice after any mutation.
+
+**Caveat:** `semver_fix_available` on the `Vulnerability` struct is
+populated by the intelligence layer, but the semver compatibility check
+is currently a boolean flag from the OSV response rather than a full
+semver range evaluation against the locked version. False positives
+(reporting `Mitigable` when the "fix" requires a major-version bump) are
+possible until a proper semver resolver is integrated.
+
+- Classifier entry: `src/bridge/classify.rs:23–51` (classify)
+- Reachable sub-classifier: `src/bridge/classify.rs:53–end` (classify_reachable)
+- Report counting: `src/bridge/mod.rs:207–213` (BridgeReport::recount)
+
+== Phantom Dependency Detection via Import Scanning
+
+[quote, src/bridge/reachability.rs]
+____
+/// Scans Rust source files for import statements (`use <crate>::` or
+/// `<crate>::` in code) to detect phantom dependencies: crates declared
+/// in Cargo.toml but never imported in any .rs file.
+____
+
+`check_reachability` normalises hyphen-to-underscore in crate names (Rust's
+convention) then searches all `.rs` files under the project directory via
+`walkdir`, skipping comment lines (`//`, `/*`, `*`). It matches four
+patterns: `use <crate>::`, `use <crate>` (bare use), `<crate>::` (qualified
+paths), and `extern crate <crate>`. Each match is recorded as an
+`ImportSite` with relative file path and line number. If no sites are found
+the status is `Phantom`; if sites are found it is `Reachable` (Phase 2 will
+distinguish `Unreachable` via taint analysis). Excluded directories
+(`.git`, `target`, `node_modules`) are filtered by the `is_excluded` helper.
+
+**Caveat:** Import scanning is grep-level, not AST-level. A crate that is
+only used inside a `#[cfg(test)]` block or a doc example will show as
+`Reachable` even though it cannot be reached in production code. Conditional
+compilation (`#[cfg(feature = "...")]`) is also ignored. These are known
+false-positive sources that Phase 2 (kanren taint) is intended to resolve.
+
+- Reachability check: `src/bridge/reachability.rs:26–end` (check_reachability)
+- Import patterns: four patterns built at runtime with normalised crate name
+- Excluded dirs: `is_excluded` helper (target, .git, node_modules, etc.)
+- Learn more: https://github.com/BurntSushi/walkdir (walkdir crate)
+
+== Origin: Extracted from panic-attacker
+
+[quote, README.adoc]
+____
+Extracted from https://github.com/hyperpolymath/panic-attacker panic-attacker
+`src/bridge/` into a standalone project.
+____
+
+The `src/bridge/` module structure in this repo mirrors the original
+`panic-attacker/src/bridge/` path. The extraction was done to allow Patch
+Bridge to evolve independently as a standalone tool and potential BoJ
+cartridge, without being gated on panic-attacker's release cycle.
+`panic-attacker` will eventually call patch-bridge as a library rather than
+embedding the bridge code directly.
+
+**Caveat:** At time of writing there is no `Cargo.toml` binary stanza and no
+integration between this repo and `panic-attacker`. The extraction is
+complete at the source level; the plumbing back into panic-attacker is pending.
+
+- Origin: https://github.com/hyperpolymath/panic-attacker (src/bridge/ directory)
+- Design document: `docs/arxiv/patch-bridge.tex` (draft manuscript, not submission-ready)
+- Learn more: https://github.com/hyperpolymath/panic-attacker
 
 == Dogfooded Across The Account
-
-These aren't one-off choices — they're patterns used across hyperpolymath repos:
 
 [cols="1,2"]
 |===
 | Technology | Also Used In
 
-| **[Tech 1]** | https://github.com/hyperpolymath/[repo1], https://github.com/hyperpolymath/[repo2]
-| **[Tech 2]** | https://github.com/hyperpolymath/[repo3]
+| **Rust + anyhow + serde** | https://github.com/hyperpolymath/panic-attacker[panic-attacker], https://github.com/hyperpolymath/a2ml-rs[a2ml-rs], https://github.com/hyperpolymath/protocol-squisher[protocol-squisher]
+
+| **walkdir (filesystem traversal)** | https://github.com/hyperpolymath/panic-attacker[panic-attacker] (full repo scanning), https://github.com/hyperpolymath/hypatia[hypatia] (rule scanning)
+
+| **OSV API (CVE feeds)** | https://github.com/hyperpolymath/panic-attacker[panic-attacker] (primary scanner), https://github.com/hyperpolymath/developer-ecosystem[developer-ecosystem] (dependency audit workflows)
+
+| **Three-way classification model** | The `Mitigable` / `Unmitigable` / `Informational` taxonomy is referenced in https://github.com/hyperpolymath/hypatia[hypatia] rule modules
+
+| **Criterion benchmarks** | https://github.com/hyperpolymath/a2ml-rs[a2ml-rs] (a2ml_bench), other Rust repos in the ecosystem
 |===
 
 == File Map
@@ -44,6 +166,37 @@ These aren't one-off choices — they're patterns used across hyperpolymath repo
 |===
 | Path | Proves
 
-| `src/` | ...
-| `ffi/` | ...
+| `src/bridge/mod.rs` | Top-level module: all shared types (Vulnerability, SeverityLabel, SourceTier, LockedDependency, ReachabilityEvidence, ImportSite, ReachabilityStatus, Classification, AssessedCve, BridgeReport), plus the `triage()` orchestrator function
+
+| `src/bridge/lockfile.rs` | Cargo.lock v3 TOML parser: extracts registry dependencies, skips root crate and non-registry sources, unit-tested with tempfile
+
+| `src/bridge/reachability.rs` | Import scanner: walkdir + four pattern strings + is_excluded filter → `ReachabilityEvidence` with import site list
+
+| `src/bridge/classify.rs` | Three-way classifier: phantom → Informational, unreachable → Informational, reachable + fix → Mitigable, reachable + no fix → Unmitigable
+
+| `src/bridge/intelligence.rs` | OSV API client: `query_osv_batch` POSTs all locked deps in one request, parses advisory JSON into `Vulnerability` structs
+
+| `src/bridge/registry.rs` | Mitigation lifecycle registry: tracks apply → monitor → retire state for each assessed CVE
+
+| `Cargo.toml` | Dependencies: anyhow, serde/serde_json, walkdir, reqwest (for OSV), criterion (dev)
+
+| `tests/e2e_test.rs` | End-to-end triage tests on fixture projects with known vulnerable deps
+
+| `tests/property_test.rs` | Property tests: classification monotonicity, recount consistency
+
+| `tests/aspect_test.rs` | Cross-cutting: error propagation, offline mode, empty lockfile
+
+| `benches/bridge_bench.rs` | Criterion benchmarks: lockfile parse speed, reachability scan throughput
+
+| `docs/arxiv/patch-bridge.tex` | Draft research manuscript (not submission-ready per README)
+
+| `TOPOLOGY.md` | Architecture diagram showing the five-stage triage pipeline
+
+| `src/interface/abi/` | Idris2 ABI definitions (scaffold — no formal proof artefacts yet)
+
+| `src/interface/ffi/src/main.zig` | Zig FFI scaffold for C-ABI exposure (pending)
+
+| `0-AI-MANIFEST.a2ml` | AI session gatekeeper — read first before modifying any file
+
+| `.machine_readable/` | A2ML state files: STATE.a2ml, ECOSYSTEM.a2ml, META.a2ml
 |===
