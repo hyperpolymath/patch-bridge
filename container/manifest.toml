@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
 #
-# Cerro Torre manifest for {{PROJECT_NAME}} .ctp bundle
+# Cerro Torre manifest for Patch Bridge .ctp bundle
 #
 # This manifest describes the container image for verified
 # container packaging. Used by `ct pack` to create .ctp bundles.
@@ -9,19 +9,19 @@
 name = "{{SERVICE_NAME}}"
 version = "{{VERSION}}"
 revision = 1
-summary = "{{PROJECT_DESCRIPTION}}"
+summary = "CVE-mitigation design and extraction target from panic-attacker"
 description = """
-{{PROJECT_NAME}} — containerised service packaged as a verified
+Patch Bridge — containerised service packaged as a verified
 cerro-torre .ctp bundle with Ed25519 signing and full provenance
 tracking.
 """
 license = "{{LICENSE}}"
-homepage = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-maintainer = "{{AUTHOR}} <{{EMAIL}}>"
+homepage = "https://{{FORGE}}/hyperpolymath/patch-bridge"
+maintainer = "Jonathan D.A. Jewell <{{EMAIL}}>"
 
 [provenance]
-upstream = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-import_date = {{CURRENT_DATE}}T00:00:00Z
+upstream = "https://{{FORGE}}/hyperpolymath/patch-bridge"
+import_date = 2026-04-13T00:00:00Z
 
 [dependencies]
 runtime = ["ca-certificates", "curl"]

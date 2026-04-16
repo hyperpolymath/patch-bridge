@@ -2,7 +2,7 @@
 ;; Ecosystem position and relationships
 (ecosystem
   (version "1.0.0")
-  (name "{{REPO}}")
+  (name "patch-bridge")
   (type "library")
   (purpose "{{REPO_DESCRIPTION}}")
   (related-projects))

@@ -104,7 +104,7 @@ jobs:
             # Match {{ANYTHING}} placeholder tokens
             PLACEHOLDERS=$(grep -cE '\{\{[A-Z_]+\}\}' "$f" 2>/dev/null || true)
             if [ "$PLACEHOLDERS" -gt 0 ]; then
-              echo "::error::$f contains $PLACEHOLDERS unfilled {{PLACEHOLDER}} tokens"
+              echo "::error::$f contains $PLACEHOLDERS unfilled  tokens"
               grep -nE '\{\{[A-Z_]+\}\}' "$f" | head -5
               ERRORS=$((ERRORS + 1))
             fi

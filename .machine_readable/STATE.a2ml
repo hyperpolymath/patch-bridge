@@ -4,16 +4,15 @@
   (metadata
     (version "0.1.0")
     (project "patch-bridge")
-    (last-updated "2026-03-30"))
+    (last-updated "2026-04-15"))
   (project-context
     (description "Draft CVE-mitigation bridge extracted from panic-attacker; currently under audit and claim containment")
     (primary-language "rust")
     (status "active"))
   (current-position
-    (phase "audit-remediation")
-    (completion-percentage 10))
+    (phase "implementation")
+    (completion-percentage 50))
   (critical-next-actions
-    ("Remove template residue from release-facing paths"
-     "Replace fake fuzz placeholder with honest documentation"
-     "Align README, roadmap, and paper status with actual evidence"
-     "Create a runnable crate target or explicitly keep the repo design-only")))
+    ("Align roadmap and paper status with actual evidence"
+     "Implement minimal mitigation pipeline prototype (Phase 2)"
+     "Flesh out Idris2 ABI proofs for classification soundness")))

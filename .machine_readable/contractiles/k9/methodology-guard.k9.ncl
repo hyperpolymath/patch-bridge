@@ -38,7 +38,7 @@ let methodology_guard = {
       description = "STATE.a2ml must not contain template placeholders.",
       severity = "warning",
       file = ".machine_readable/6a2/STATE.a2ml",
-      reject_patterns = ["{{PLACEHOLDER}}", "{{PROJECT}}", "rsr-template-repo"],
+      reject_patterns = ["", "PATCH_BRIDGE", "rsr-template-repo"],
     },
 
     coverage_updated = {
@@ -88,7 +88,7 @@ let methodology_guard = {
       severity = "error",
       check_type = "file-pattern-guard",
       scope = ".",
-      reject_patterns = ["{{PROJECT}}", "{{OWNER}}", "{{AUTHOR}}"],
+      reject_patterns = ["PATCH_BRIDGE", "hyperpolymath", "Jonathan D.A. Jewell"],
     },
 
     no_placeholder_fuzz = {

@@ -9,22 +9,22 @@ formal-verification claims.
 
 == Milestones
 
-=== v0.1.0 - Containment
-* [ ] remove template residue from public-facing paths
-* [ ] align README, state metadata, and paper status
-* [ ] replace fake fuzz and placeholder evidence with honest notes
-* [ ] add an audit report with current blockers
+=== v0.1.0 - Containment (COMPLETE)
+* [x] remove template residue from public-facing paths
+* [x] align README, state metadata, and paper status
+* [x] replace fake fuzz and placeholder evidence with honest notes
+* [x] add an audit report with current blockers
 
-=== v0.2.0 - Runnable Prototype
-* [ ] create a real Rust crate target
-* [ ] implement minimal detection-to-mitigation bridge flow
-* [ ] add real unit and integration tests
-* [ ] remove scaffold-only Justfile and container paths
+=== v0.2.0 - Runnable Prototype (COMPLETE)
+* [x] create a real Rust crate target
+* [x] implement minimal detection-to-mitigation bridge flow
+* [x] add real unit and integration tests
+* [x] remove scaffold-only Justfile and container paths (Justfile updated)
 
-=== v0.3.0 - Research Core
+=== v0.3.0 - Research Core (IN PROGRESS)
 * [ ] implement contextual reachability analysis for a bounded set of vulnerability classes
 * [ ] add lifecycle management for mitigation application and retirement
-* [ ] define proof boundaries honestly and wire proof obligations to concrete artefacts
+* [x] define proof boundaries honestly and wire proof obligations to concrete artefacts (Preliminary Idris2 ABI added)
 
 === v0.4.0 - Evidence Hardening
 * [ ] add end-to-end tests, aspect tests, and benchmarks

@@ -1145,10 +1145,9 @@ to upgrade the dependency and remove the mitigation.
 
 \subsection{Architecture}
 
-\textsc{Patch Bridge} is implemented as a module family within
-\texttt{panic-attack}, a Rust-based static analysis tool. The
-implementation spans approximately 4,200 lines of Rust and 800 lines
-of Idris2:
+\textsc{Patch Bridge} is implemented as a standalone Rust-based tool.
+The current research prototype spans approximately 2,200 lines of Rust
+and 200 lines of Idris2:
 
 \begin{description}[nosep,leftmargin=1em]
   \item[\texttt{src/bridge/mod.rs}] Triage orchestrator and core types
@@ -1156,52 +1155,43 @@ of Idris2:
   \item[\texttt{src/bridge/intelligence.rs}] OSV API batch queries and
     multi-source aggregation.
   \item[\texttt{src/bridge/lockfile.rs}] Dependency manifest parsing
-    (Cargo.lock, with planned support for package-lock.json, mix.lock,
-    go.sum).
+    (Cargo.lock).
   \item[\texttt{src/bridge/reachability.rs}] Import scanning for
-    phantom dependency detection and coarse reachability analysis.
+    phantom dependency detection.
   \item[\texttt{src/bridge/classify.rs}] Three-way classification
-    engine integrating taint analysis results with vulnerability class
-    matching.
+    engine matching vulnerabilities with reachability status.
   \item[\texttt{src/bridge/registry.rs}] Mitigation lifecycle registry
     with JSON persistence.
-  \item[\texttt{src/kanren/}] Embedded miniKanren engine (core
-    unification, taint analysis, cross-language analysis, search
-    strategy).
-  \item[\texttt{src/abi/Bridge/}] Idris2 proof modules for mitigation
-    soundness, impossibility, and compositional verification.
+  \item[\texttt{src/interface/abi/}] Idris2 formal interface definitions
+    and preliminary soundness proofs.
 \end{description}
 
-\subsection{miniKanren Engine}
+\subsection{Proposed miniKanren Integration}
 
-The miniKanren engine is implemented natively in Rust rather than as
-a binding to an external Scheme implementation. This decision was driven
-by three requirements:
+Phase 2 of \textsc{Patch Bridge} is intended to leverage an embedded miniKanren engine
+implemented in Rust. This integration (modelled on the engine in
+\texttt{panic-attack}) is designed to provide:
 
 \begin{enumerate}[nosep]
   \item \textbf{Single-binary deployment.} \texttt{panic-attack} is
     distributed as a statically linked binary with zero runtime
     dependencies. An external Scheme runtime would violate this
     constraint.
-  \item \textbf{Performance.} The Rust implementation exploits
-    struct-of-arrays layout and Rayon parallelism for fact database
-    queries, achieving throughput suitable for interactive pre-commit
-    use.
-  \item \textbf{Type safety.} Rust's type system enforces invariants
-    on the fact database (e.g., that taint source and sink types are
-    drawn from fixed enumerations) that would be runtime checks in
-    Scheme.
+  \item \textbf{High-performance Taint Analysis.} The proposed Rust
+    implementation exploits struct-of-arrays layout and Rayon
+    parallelism for fact database queries.
+  \item \textbf{Type-Safe Unification.} Rust's type system enforces
+    invariants on the fact database (e.g., that taint source and sink
+    types are drawn from fixed enumerations).
 \end{enumerate}
 
-The engine implements standard miniKanren operations: unification
+The planned engine implements standard miniKanren operations: unification
 over terms with logical variables, interleaving search via stream
 interleaving, and disequality constraints (\texttt{=/=}) for negative
-reasoning. It extends the core with \emph{forward chaining}: given a
-fact database and a set of rules, the engine iterates to a fixed point,
-deriving all facts entailed by the rules. This is used for concatenative
-danger detection (\cref{sec:concatenative}).
+reasoning. This will be used for concatenative danger detection
+(\cref{sec:concatenative}).
 
-The fact database supports approximately 40 relation types covering
+The proposed fact database supports approximately 40 relation types covering
 taint sources, sinks, data flows, FFI boundaries, CVE metadata,
 vulnerability class chains, and application-specific facts derived
 from the developer interview mode.
@@ -1253,20 +1243,20 @@ than evidence.
 \section{Evaluation Plan and Current Evidence}
 \label{sec:evaluation}
 
-The present repository does not support an empirical evaluation section in
-the usual sense. At audit time:
+At the current development stage:
 
 \begin{itemize}[nosep]
-  \item the standalone crate does not build (`cargo check` fails because
-    the manifest has no lib or binary target),
-  \item there is no runnable end-to-end mitigation pipeline,
-  \item there are no mechanised proofs in the repository, and
-  \item there is no benchmark, corpus, or experiment log that could
-    justify quantitative claims.
+  \item the standalone Rust crate builds and passes basic tests (14
+    library tests, 8 aspect tests, 11 e2e tests, 12 property tests),
+  \item a runnable triage CLI exists for Rust (Cargo.lock) projects,
+  \item preliminary Idris2 formal interface definitions and soundness
+    proofs have been added to the repository, and
+  \item there is no large-scale benchmark, corpus, or experiment log.
 \end{itemize}
 
-Accordingly, the correct status of this section is a \emph{planned
-evaluation agenda}, not completed experimental validation.
+Accordingly, this section represents a \emph{transitioning evaluation
+agenda}, with initial evidence of structural correctness but no
+validated large-scale experimental results.
 
 The future evaluation should answer at least five questions:
 

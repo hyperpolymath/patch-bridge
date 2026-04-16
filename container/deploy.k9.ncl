@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# deploy.k9.ncl — {{PROJECT_NAME}} deployment component (Hunt level)
+# deploy.k9.ncl — Patch Bridge deployment component (Hunt level)
 #
 # k9-svc deployment specification with full pedigree (L1-L5).
 # Security Level: 'Hunt (requires cryptographic handshake for execution).
@@ -22,7 +22,7 @@ let component_pedigree = {
     version = "{{VERSION}}",
     breed = "application/vnd.k9+nickel",
     magic_number = "K9!",
-    description = "{{PROJECT_NAME}} deployment component (Hunt level)",
+    description = "Patch Bridge deployment component (Hunt level)",
   },
 
   # ─────────────────────────────────────────────────────────────

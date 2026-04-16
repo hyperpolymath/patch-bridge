@@ -167,7 +167,7 @@ mod tests {
 
     #[test]
     fn test_save_and_load() {
-        let tmp = TempDir::new().unwrap();
+        let tmp = TempDir::new().expect("TODO: handle error");
         let mut reg = MitigationRegistry::new();
         reg.entries.push(MitigationEntry {
             id: "PB-0001".to_string(),
@@ -181,8 +181,8 @@ mod tests {
             status: MitigationStatus::Pending,
         });
 
-        reg.save(tmp.path()).unwrap();
-        let loaded = MitigationRegistry::load(tmp.path()).unwrap();
+        reg.save(tmp.path()).expect("TODO: handle error");
+        let loaded = MitigationRegistry::load(tmp.path()).expect("TODO: handle error");
         assert_eq!(loaded.entries.len(), 1);
         assert_eq!(loaded.entries[0].id, "PB-0001");
     }

@@ -119,17 +119,17 @@ mod tests {
 
     #[test]
     fn test_phantom_dependency() {
-        let tmp = TempDir::new().unwrap();
+        let tmp = TempDir::new().expect("TODO: handle error");
         let src_dir = tmp.path().join("src");
-        fs::create_dir_all(&src_dir).unwrap();
+        fs::create_dir_all(&src_dir).expect("TODO: handle error");
         fs::write(
             src_dir.join("main.rs"),
             "use serde::Serialize;\nfn main() {}\n",
         )
-        .unwrap();
+        .expect("TODO: handle error");
 
         // Check for a crate that is NOT imported
-        let evidence = check_reachability(tmp.path(), "octocrab").unwrap();
+        let evidence = check_reachability(tmp.path(), "octocrab").expect("TODO: handle error");
         assert!(!evidence.is_imported);
         assert_eq!(evidence.status, ReachabilityStatus::Phantom);
         assert!(evidence.import_sites.is_empty());
@@ -137,16 +137,16 @@ mod tests {
 
     #[test]
     fn test_reachable_dependency() {
-        let tmp = TempDir::new().unwrap();
+        let tmp = TempDir::new().expect("TODO: handle error");
         let src_dir = tmp.path().join("src");
-        fs::create_dir_all(&src_dir).unwrap();
+        fs::create_dir_all(&src_dir).expect("TODO: handle error");
         fs::write(
             src_dir.join("main.rs"),
             "use serde::Serialize;\nfn main() {}\n",
         )
-        .unwrap();
+        .expect("TODO: handle error");
 
-        let evidence = check_reachability(tmp.path(), "serde").unwrap();
+        let evidence = check_reachability(tmp.path(), "serde").expect("TODO: handle error");
         assert!(evidence.is_imported);
         assert_eq!(evidence.status, ReachabilityStatus::Reachable);
         assert_eq!(evidence.import_sites.len(), 1);
@@ -155,33 +155,33 @@ mod tests {
 
     #[test]
     fn test_hyphenated_crate_name() {
-        let tmp = TempDir::new().unwrap();
+        let tmp = TempDir::new().expect("TODO: handle error");
         let src_dir = tmp.path().join("src");
-        fs::create_dir_all(&src_dir).unwrap();
+        fs::create_dir_all(&src_dir).expect("TODO: handle error");
         fs::write(
             src_dir.join("lib.rs"),
             "use serde_json::Value;\n",
         )
-        .unwrap();
+        .expect("TODO: handle error");
 
         // Query with hyphen — should match underscore form
-        let evidence = check_reachability(tmp.path(), "serde-json").unwrap();
+        let evidence = check_reachability(tmp.path(), "serde-json").expect("TODO: handle error");
         assert!(evidence.is_imported);
         assert_eq!(evidence.status, ReachabilityStatus::Reachable);
     }
 
     #[test]
     fn test_skips_comments() {
-        let tmp = TempDir::new().unwrap();
+        let tmp = TempDir::new().expect("TODO: handle error");
         let src_dir = tmp.path().join("src");
-        fs::create_dir_all(&src_dir).unwrap();
+        fs::create_dir_all(&src_dir).expect("TODO: handle error");
         fs::write(
             src_dir.join("main.rs"),
             "// use octocrab::Octocrab;\nfn main() {}\n",
         )
-        .unwrap();
+        .expect("TODO: handle error");
 
-        let evidence = check_reachability(tmp.path(), "octocrab").unwrap();
+        let evidence = check_reachability(tmp.path(), "octocrab").expect("TODO: handle error");
         assert!(!evidence.is_imported);
         assert_eq!(evidence.status, ReachabilityStatus::Phantom);
     }

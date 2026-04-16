@@ -1,4 +1,4 @@
-// {{PROJECT}} FFI Build Configuration
+// PATCH_BRIDGE FFI Build Configuration
 // SPDX-License-Identifier: PMPL-1.0-or-later
 
 const std = @import("std");

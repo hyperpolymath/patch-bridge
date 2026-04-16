@@ -8,12 +8,14 @@
 
 | Category     | Count | Notes |
 |-------------|-------|-------|
-| Unit tests   | ~14   | Inline `#[test]`: classify(4), intelligence(2), lockfile(2), reachability(4), registry(2) |
-| Integration  | 1     | src/interface/ffi/test/integration_test.zig |
-| E2E          | 0     | None |
-| Benchmarks   | 0     | None |
+| Unit tests   | 14    | bridge: classify(4), intelligence(2), lockfile(2), reachability(4), registry(2) |
+| Integration  | 1     | src/interface/ffi/test/build.zig |
+| E2E          | 11    | tests/e2e_test.rs |
+| Property     | 12    | tests/property_test.rs |
+| Aspect       | 8     | tests/aspect_test.rs |
+| Benchmarks   | 1     | benches/bridge_bench.rs |
 
-**Source modules:** ~11 Rust source files in src/bridge/ (classify, intelligence, lockfile, reachability, registry + main) + 3 Idris2 ABI + 1 Zig FFI + 1 ReScript.
+**Source modules:** ~11 Rust source files in src/bridge/ + 3 Idris2 ABI + 1 Zig FFI.
 
 ## What's Missing
 

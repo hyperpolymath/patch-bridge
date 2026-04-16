@@ -1,6 +1,6 @@
 #!/bin/sh
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# {{PROJECT_NAME}} container entrypoint
+# Patch Bridge container entrypoint
 #
 # Handles signal propagation, startup logging, and health check
 # preparation before exec-ing into the main application process.

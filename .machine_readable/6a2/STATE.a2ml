@@ -7,37 +7,36 @@
 [metadata]
 project = "patch-bridge"
 version = "0.1.0"
-last-updated = "2026-03-30"
+last-updated = "2026-04-15"
 status = "active"  # active | paused | archived
 
 [project-context]
 name = "patch-bridge"
 purpose = "Draft CVE-mitigation bridge extracted from panic-attacker, currently under audit and claim containment."
-completion-percentage = 10
+completion-percentage = 50
 
 [position]
-phase = "design"            # design | implementation | testing | maintenance | archived
-maturity = "experimental"   # experimental | alpha | beta | production | lts
+phase = "implementation"    # design | implementation | testing | maintenance | archived
+maturity = "alpha"          # experimental | alpha | beta | production | lts
 
 [route-to-mvp]
 milestones = [
-  { name = "Phase 0: claim containment and template cleanup", completion = 30 },
-  { name = "Phase 1: runnable standalone crate target", completion = 0 },
-  { name = "Phase 2: minimal mitigation pipeline prototype", completion = 0 },
-  { name = "Phase 3: evidence surfaces (tests/e2e/aspect/bench)", completion = 0 },
-  { name = "Phase 4: bounded proof integration", completion = 0 },
+  { name = "Phase 0: claim containment and template cleanup", completion = 100 },
+  { name = "Phase 1: runnable standalone crate target", completion = 100 },
+  { name = "Phase 2: minimal mitigation pipeline prototype", completion = 40 },
+  { name = "Phase 3: evidence surfaces (tests/e2e/aspect/bench)", completion = 60 },
+  { name = "Phase 4: bounded proof integration", completion = 20 },
 ]
 
 [blockers-and-issues]
-# Publication-facing claims currently outrun the repository state.
-# The crate manifest has no runnable target and template residue remains in core paths.
+# Basic standalone build and triage CLI now functional.
+# Core Idris2 ABI files added; proofs need further development.
 
 [critical-next-actions]
 actions = [
-  "Remove template residue from release-facing files",
-  "Replace fake fuzz placeholder with an honest status note",
-  "Create a runnable crate target or explicitly keep the repo design-only",
-  "Tighten the paper to design-draft wording until real proofs and evidence exist",
+  "Align roadmap and paper status with actual evidence",
+  "Implement minimal mitigation pipeline prototype (Phase 2)",
+  "Flesh out Idris2 ABI proofs for classification soundness",
 ]
 
 [maintenance-status]

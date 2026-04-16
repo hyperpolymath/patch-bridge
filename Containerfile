@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# Containerfile for {{PROJECT_NAME}}
+# Containerfile for Patch Bridge
 # Build: podman build -t {{project}}:latest -f Containerfile .
 # Run:   podman run --rm -it {{project}}:latest
 # Seal:  selur seal {{project}}:latest

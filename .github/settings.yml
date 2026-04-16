@@ -7,14 +7,14 @@
 # applied by the probot/settings app when changes are pushed to the default
 # branch. Install the app at: https://github.com/apps/settings
 #
-# Template file — replace {{REPO}} and {{DESCRIPTION}} with actual values.
+# Template file — replace patch-bridge and {{DESCRIPTION}} with actual values.
 
 # ─── Repository Settings ───────────────────────────────────────────────────────
 
 repository:
-  name: "{{REPO}}"
+  name: "patch-bridge"
   description: "{{DESCRIPTION}}"
-  homepage: "https://github.com/hyperpolymath/{{REPO}}"
+  homepage: "https://github.com/hyperpolymath/patch-bridge"
   private: false
   has_issues: true
   has_projects: true

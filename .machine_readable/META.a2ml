@@ -2,7 +2,7 @@
 ;; Architecture decisions and development practices
 (meta
   (version "1.0.0")
-  (project "{{REPO}}")
+  (project "patch-bridge")
   (architecture-decisions)
   (development-practices
     (code-review "required")

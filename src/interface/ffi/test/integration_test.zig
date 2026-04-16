@@ -1,4 +1,4 @@
-// {{PROJECT}} Integration Tests
+// PATCH_BRIDGE Integration Tests
 // SPDX-License-Identifier: PMPL-1.0-or-later
 //
 // These tests verify that the Zig FFI correctly implements the Idris2 ABI

@@ -98,7 +98,7 @@ fn classify_reachable(
         )
     } else if vuln.semver_fix_available {
         // Semver-compatible fix — easiest mitigation
-        let fix_version = vuln.fixed_versions.first().unwrap();
+        let fix_version = vuln.fixed_versions.first().expect("TODO: handle error");
         (
             Classification::Mitigable,
             format!(
