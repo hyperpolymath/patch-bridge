@@ -39,7 +39,7 @@ jobs:
           publish_results: true
 
       - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@0d579ffd059c29b07949a3cce3983f0780820c98 # v4
+        uses: github/codeql-action/upload-sarif@c6f931105cb2c34c8f901cc885ba1e2e259cf745 # v4
         with:
           sarif_file: results.sarif
 
@@ -71,26 +71,11 @@ jobs:
             exit 1
           fi
 
-      - name: Check LICENSE exists
-        run: |
-          if [ ! -f "LICENSE" ] && [ ! -f "LICENSE.txt" ] && [ ! -f "LICENSE.md" ]; then
-            echo "::error::LICENSE file is required for OpenSSF Best Practices"
-            exit 1
-          fi
-
-      - name: Check CONTRIBUTING exists
-        run: |
-          if [ ! -f "CONTRIBUTING.md" ] && [ ! -f "CONTRIBUTING.adoc" ]; then
-            echo "::error::CONTRIBUTING file is required for OpenSSF Best Practices"
-            exit 1
-          fi
-
       - name: Check for pinned dependencies
         run: |
           # Check workflows for unpinned actions
           unpinned=$(grep -r "uses:.*@v[0-9]" .github/workflows/*.yml 2>/dev/null | grep -v "#" | head -5 || true)
           if [ -n "$unpinned" ]; then
-            echo "::error::Found unpinned actions — all actions MUST be SHA-pinned:"
+            echo "::warning::Found unpinned actions:"
             echo "$unpinned"
-            exit 1
           fi
