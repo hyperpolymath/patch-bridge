@@ -9,7 +9,7 @@ version: 0.1.0
 date-released: 2026-04-13
 url: "https://{{FORGE}}/hyperpolymath/patch-bridge"
 repository-code: "https://{{FORGE}}/hyperpolymath/patch-bridge"
-license: PMPL-1.0-or-later
+license: MPL-2.0
 keywords:
   - "rsr"
   - "formal-verification"

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = Patch Bridge Audit 2026-03-30 (v2)
 :revdate: 2026-03-30
 
