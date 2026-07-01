@@ -4,5 +4,5 @@
   (version "1.0.0")
   (name "patch-bridge")
   (type "library")
-  (purpose "{{REPO_DESCRIPTION}}")
+  (purpose "Reachability-aware CVE triage engine: Cargo.lock -> OSV batch query -> import-scan reachability -> Mitigable/Unmitigable/Informational classification")
   (related-projects))

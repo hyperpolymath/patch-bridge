@@ -1,22 +1,8 @@
-# Security Policy
-
-<!-- 
-============================================================================
-TEMPLATE INSTRUCTIONS (delete this block before publishing)
-============================================================================
-Replace all  values with your information:
-  Patch Bridge     - Your project name
-  hyperpolymath            - GitHub username or org (e.g., hyperpolymath)
-  patch-bridge             - Repository name
-  {{SECURITY_EMAIL}}   - Security contact email
-  {{PGP_FINGERPRINT}}  - Your PGP key fingerprint (40 chars, no spaces)
-  {{PGP_KEY_URL}}      - URL to your public PGP key
-  {{WEBSITE}}          - Your website/domain
-  2026     - Current year for copyright
-
-Optional: Remove sections that don't apply (e.g., PGP if you don't use it)
-============================================================================
+<!--
+SPDX-License-Identifier: CC-BY-SA-4.0
+Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 -->
+# Security Policy
 
 We take security seriously. We appreciate your efforts to responsibly disclose vulnerabilities and will make every effort to acknowledge your contributions.
 
@@ -52,26 +38,11 @@ This method ensures:
 - Coordinated disclosure tooling
 - Automatic credit when the advisory is published
 
-### Alternative: Encrypted Email
+### Alternative: Email
 
-If you cannot use GitHub Security Advisories, you may email us directly:
-
-| | |
-|---|---|
-| **Email** | {{SECURITY_EMAIL}} |
-| **PGP Key** | [Download Public Key]({{PGP_KEY_URL}}) |
-| **Fingerprint** | `{{PGP_FINGERPRINT}}` |
-
-```bash
-# Import our PGP key
-curl -sSL {{PGP_KEY_URL}} | gpg --import
-
-# Verify fingerprint
-gpg --fingerprint {{SECURITY_EMAIL}}
-
-# Encrypt your report
-gpg --armor --encrypt --recipient {{SECURITY_EMAIL}} report.txt
-```
+If you cannot use GitHub Security Advisories, you may email the maintainer
+directly at j.d.a.jewell@open.ac.uk. There is no published PGP key at
+present; for an encrypted channel, prefer GitHub Security Advisories (above).
 
 > **⚠️ Important:** Do not report security vulnerabilities through public GitHub issues, pull requests, discussions, or social media.
 
@@ -323,7 +294,7 @@ To stay informed about security updates:
 
 - **Watch this repository**: Click "Watch" → "Custom" → Select "Security alerts"
 - **GitHub Security Advisories**: Published at [Security Advisories](https://github.com/hyperpolymath/patch-bridge/security/advisories)
-- **Release notes**: Security fixes noted in [CHANGELOG](CHANGELOG.md)
+- **Release notes**: Security fixes noted in [CHANGELOG](../CHANGELOG.md)
 
 ### Update Policy
 
@@ -348,7 +319,7 @@ To stay informed about security updates:
 
 ## Security Best Practices
 
-When using Patch Bridge, we recommend:
+When using patch-bridge, we recommend:
 
 ### General
 
@@ -370,9 +341,8 @@ When using Patch Bridge, we recommend:
 
 ## Additional Resources
 
-- [Our PGP Public Key]({{PGP_KEY_URL}})
 - [Security Advisories](https://github.com/hyperpolymath/patch-bridge/security/advisories)
-- [Changelog](CHANGELOG.md)
+- [Changelog](../CHANGELOG.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [CVE Database](https://cve.mitre.org/)
 - [CVSS Calculator](https://www.first.org/cvss/calculator/3.1)
@@ -383,9 +353,9 @@ When using Patch Bridge, we recommend:
 
 | Purpose | Contact |
 |---------|---------|
-| **Security issues** | [Report via GitHub](https://github.com/hyperpolymath/patch-bridge/security/advisories/new) or {{SECURITY_EMAIL}} |
+| **Security issues** | [Report via GitHub](https://github.com/hyperpolymath/patch-bridge/security/advisories/new) or j.d.a.jewell@open.ac.uk |
 | **General questions** | [GitHub Discussions](https://github.com/hyperpolymath/patch-bridge/discussions) |
-| **Other enquiries** | See [README](README.md) for contact information |
+| **Other enquiries** | See [README](../README.adoc) for contact information |
 
 ---
 
@@ -399,7 +369,7 @@ This security policy may be updated from time to time. Significant changes will 
 
 ---
 
-*Thank you for helping keep Patch Bridge and its users safe.* 🛡️
+*Thank you for helping keep patch-bridge and its users safe.* 🛡️
 
 ---
 
