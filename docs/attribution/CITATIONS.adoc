@@ -6,7 +6,7 @@
 [source,bibtex]
 ----
 @software{Patch Bridge_2026,
-  author = {{{AUTHOR_LAST}}, {{AUTHOR_FIRST}}},
+  author = {Jewell, Jonathan},
   title = {Patch Bridge},
   year = {2026},
   url = {https://github.com/hyperpolymath/Patch Bridge},
@@ -16,7 +16,7 @@
 
 == Harvard Style
 
-{{AUTHOR_LAST}}, {{AUTHOR_INITIALS}} (2026) _Patch Bridge_ [Computer software]. Available at: https://github.com/hyperpolymath/Patch Bridge
+Jewell, JDJ (2026) _Patch Bridge_ [Computer software]. Available at: https://github.com/hyperpolymath/Patch Bridge
 
 == OSCOLA
 
@@ -24,11 +24,11 @@ Jonathan D.A. Jewell, 'Patch Bridge' (2026) <https://github.com/hyperpolymath/Pa
 
 == MLA
 
-{{AUTHOR_LAST}}, {{AUTHOR_FIRST}} "Patch Bridge." 2026, github.com/hyperpolymath/Patch Bridge.
+Jewell, Jonathan "Patch Bridge." 2026, github.com/hyperpolymath/Patch Bridge.
 
 == APA 7
 
-{{AUTHOR_LAST}}, {{AUTHOR_INITIALS}} (2026). _Patch Bridge_ [Computer software]. GitHub. https://github.com/hyperpolymath/Patch Bridge
+Jewell, JDJ (2026). _Patch Bridge_ [Computer software]. GitHub. https://github.com/hyperpolymath/Patch Bridge
 
 == See Also
 

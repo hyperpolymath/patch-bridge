@@ -71,8 +71,8 @@ FROM cgr.dev/chainguard/wolfi-base:latest
 # OCI image labels (compatible with cerro-torre .ctp bundle metadata)
 LABEL org.opencontainers.image.title="Patch Bridge" \
       org.opencontainers.image.description="CVE-mitigation design and extraction target from panic-attacker" \
-      org.opencontainers.image.url="https://{{FORGE}}/hyperpolymath/patch-bridge" \
-      org.opencontainers.image.source="https://{{FORGE}}/hyperpolymath/patch-bridge" \
+      org.opencontainers.image.url="https://github.com/hyperpolymath/patch-bridge" \
+      org.opencontainers.image.source="https://github.com/hyperpolymath/patch-bridge" \
       org.opencontainers.image.vendor="hyperpolymath" \
       org.opencontainers.image.licenses="{{LICENSE}}" \
       org.opencontainers.image.authors="Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>" \

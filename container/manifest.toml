@@ -16,11 +16,11 @@ cerro-torre .ctp bundle with Ed25519 signing and full provenance
 tracking.
 """
 license = "{{LICENSE}}"
-homepage = "https://{{FORGE}}/hyperpolymath/patch-bridge"
-maintainer = "Jonathan D.A. Jewell <{{EMAIL}}>"
+homepage = "https://github.com/hyperpolymath/patch-bridge"
+maintainer = "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"
 
 [provenance]
-upstream = "https://{{FORGE}}/hyperpolymath/patch-bridge"
+upstream = "https://github.com/hyperpolymath/patch-bridge"
 import_date = 2026-04-13T00:00:00Z
 
 [dependencies]
