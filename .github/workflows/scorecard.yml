@@ -5,8 +5,6 @@ on:
   branch_protection_rule:
   schedule:
     - cron: '23 4 * * 1'
-  push:
-    branches: [main]
 
 # The reusable's scorecard job declares security-events:write + id-token:write;
 # a called workflow's job permissions must be a SUBSET of the caller's grant
