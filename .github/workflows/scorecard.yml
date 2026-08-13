@@ -11,6 +11,7 @@ on:
 # (callee ⊆ caller) — `read-all` grants no writes, so the run startup-failed at
 # plan time with zero jobs.
 permissions:
+  actions: read
   contents: read
   security-events: write
   id-token: write
