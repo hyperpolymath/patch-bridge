@@ -1,0 +1,25 @@
+== Architecture Topology
+
+=== Component Overview
+
+[cols=",,",options="header",]
+|===
+|Component |Language |Purpose
+|\{\{COMPONENT}} |\{\{LANGUAGE}} |\{\{PURPOSE}}
+|===
+
+=== Data Flow
+
+....
+[Input] → [Processing] → [Output]
+....
+
+=== Integration Points
+
+* *Upstream*: \{\{UPSTREAM_DEPS}}
+* *Downstream*: \{\{DOWNSTREAM_CONSUMERS}}
+
+=== Deployment
+
+* Container: Stapeln Six ecosystem
+* CI/CD: GitHub Actions → Hypatia scan → Mirror
