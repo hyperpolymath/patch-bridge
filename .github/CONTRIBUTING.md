@@ -1,5 +1,5 @@
 # Clone the repository
-git clone https://{{FORGE}}/hyperpolymath/patch-bridge.git
+git clone https://github.com/hyperpolymath/patch-bridge.git
 cd patch-bridge
 
 # Using Nix (recommended for reproducibility)
@@ -35,11 +35,11 @@ patch-bridge/
 │   └── contractiles/    # Policy contracts (k9, dust, lust, must, trust)
 ├── .well-known/         # Protocol files (Perimeter 1-3)
 ├── .github/             # GitHub config (Perimeter 1)
+│   ├── CONTRIBUTING.md  # This file
 │   ├── ISSUE_TEMPLATE/
 │   └── workflows/
 ├── CHANGELOG.md
 ├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md      # This file
 ├── GOVERNANCE.md
 ├── LICENSE
 ├── MAINTAINERS.md
@@ -58,7 +58,7 @@ patch-bridge/
 
 **Before reporting**:
 1. Search existing issues
-2. Check if it's already fixed in `{{MAIN_BRANCH}}`
+2. Check if it's already fixed in `main`
 3. Determine which perimeter the bug affects
 
 **When reporting**:
@@ -91,10 +91,10 @@ Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md) an
 
 Look for issues labelled:
 
-- [`good first issue`](https://{{FORGE}}/hyperpolymath/patch-bridge/labels/good%20first%20issue) — Simple Perimeter 3 tasks
-- [`help wanted`](https://{{FORGE}}/hyperpolymath/patch-bridge/labels/help%20wanted) — Community help needed
-- [`documentation`](https://{{FORGE}}/hyperpolymath/patch-bridge/labels/documentation) — Docs improvements
-- [`perimeter-3`](https://{{FORGE}}/hyperpolymath/patch-bridge/labels/perimeter-3) — Community sandbox scope
+- [`good first issue`](https://github.com/hyperpolymath/patch-bridge/labels/good%20first%20issue) — Simple Perimeter 3 tasks
+- [`help wanted`](https://github.com/hyperpolymath/patch-bridge/labels/help%20wanted) — Community help needed
+- [`documentation`](https://github.com/hyperpolymath/patch-bridge/labels/documentation) — Docs improvements
+- [`perimeter-3`](https://github.com/hyperpolymath/patch-bridge/labels/perimeter-3) — Community sandbox scope
 
 ---
 
