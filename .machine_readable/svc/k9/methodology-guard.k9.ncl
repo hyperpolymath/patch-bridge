@@ -7,9 +7,22 @@ K9!
 # with the methodology ergonomics declared in agent_instructions/methodology.a2ml.
 
 let methodology_guard = {
-  name = "patch-bridge-methodology-guard",
-  version = "1.0.0",
-  description = "Validates that the bridge modules remain present, coverage metadata is fresh, and template placeholders are removed.",
+  pedigree = {
+    schema_version = "1.0.0",
+    component_type = "methodology-guard",
+    security = {
+      leash = 'Kennel,
+      trust_level = "data-only",
+      allow_network = false,
+      allow_filesystem_write = false,
+      allow_subprocess = false,
+    },
+    metadata = {
+      name = "patch-bridge-methodology-guard",
+      version = "1.0.0",
+      description = "Validates that the bridge modules remain present, coverage metadata is fresh, and template placeholders are removed.",
+    },
+  },
 
   checks = {
     divergent_invariant_language = {
